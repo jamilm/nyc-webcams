@@ -35,8 +35,16 @@ app.get('/api/cameras/:id/image', async (req, res) => {
   }
 });
 
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Serve static files from the React build
 app.use(express.static(path.join(__dirname, 'build')));
+
+// Special route for the spy view
+app.get('/spy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'spy.html'));
+});
 
 // Handle any requests that don't match the ones above
 app.get('*', (req, res) => {
