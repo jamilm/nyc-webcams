@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
 
 const app = express();
 
@@ -32,6 +33,14 @@ app.get('/api/cameras/:id/image', async (req, res) => {
     console.error('Error fetching camera image:', error);
     res.status(500).json({ message: 'Failed to fetch camera image' });
   }
+});
+
+// Serve static files from the React build
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Handle any requests that don't match the ones above
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5050;
